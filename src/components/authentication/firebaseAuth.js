@@ -5,6 +5,8 @@ import {
 	getAuth,
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
+	GoogleAuthProvider,
+	signInWithPopup,
 } from "firebase/auth";
 import { useContext } from "react";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -29,7 +31,7 @@ const analytics = getAnalytics(app);
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
 
-// Function to invoke when user sign up
+// Function to invoke when user sign up with email and password
 export const signUp = (email, password, setSignupSuccess) => {
 	// createUserWithEmailAndPassword()
 	createUserWithEmailAndPassword(auth, email, password)
@@ -43,15 +45,38 @@ export const signUp = (email, password, setSignupSuccess) => {
 		});
 };
 
-// Function to invoke when user sign in
+// Function to invoke when user sign in with email and password
 export const signIn = (email, password, setLoginSuccess) => {
 	signInWithEmailAndPassword(auth, email, password)
 		.then((userCredentials) => {
 			console.log("User signed in successfully");
-			setLoginSuccess((prev) => (prev = true));
+			setLoginSuccess(true);
 		})
 		.catch((error) => {
 			console.log("There was an error in siging in \n", error);
-			setLoginSuccess((prev) => (prev = false));
+			setLoginSuccess(false);
 		});
+};
+
+// Setup to login using third party apps
+const provider = new GoogleAuthProvider();
+
+// Function to invoke when user sign in with other sign in options
+export const signInWithOtherOptions = (type) => {
+	switch (type) {
+		case "google":
+			signInWithPopup(auth, provider)
+				.then((result) => {
+					const credentials = GoogleAuthProvider.credentialFromResult(result);
+					console.log(result.message, credentials);
+					setLoginSuccess(true);
+				})
+				.catch((error) => {
+					const credentials = GoogleAuthProvider.credentialFromError(error);
+					console.log(error.message, credentials);
+					setLoginSuccess(false);
+				});
+		default:
+			console.log("This is developed my Areebuddin");
+	}
 };

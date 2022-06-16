@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../GameContext";
-import { signIn } from "./firebaseAuth";
+import { signIn, signInWithOtherOptions } from "./firebaseAuth";
 import { Snackbar, Alert } from "@mui/material";
+import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
 	const { loginSuccess, setLoginSuccess } = useContext(Context);
@@ -54,6 +55,25 @@ const Login = () => {
 				<button className="btn btn-primary col-12" type="submit">
 					Login
 				</button>
+				<div className="form-group row justify-content-center pt-2">OR</div>
+				<div className="form-group row justify-content-center p-0 m-0">
+					<button
+						className="btn rounded-circle border border-primary"
+						style={{
+							fontSize: "2rem",
+							width: "3rem",
+							height: "3rem",
+							display: "grid",
+							placeItems: "center",
+							padding: "0",
+							// paddingRight: "2.3rem",
+							// paddingBottom: "0.3rem",
+						}}
+						onClick={() => signInWithOtherOptions("google")}
+					>
+						<FcGoogle />
+					</button>
+				</div>
 			</form>
 			{submit && (
 				<div style={{ position: "absolute", top: "5rem" }}>
