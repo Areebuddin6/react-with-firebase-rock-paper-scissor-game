@@ -7,6 +7,8 @@ const GameContext = (props) => {
 	const [computerScore, setComputerScore] = useState(0);
 	const [randomNumber, setRandomNumber] = useState(0);
 	const [userInputNumber, setUserInputNumber] = useState(0);
+	const [loginSuccess, setLoginSuccess] = useState();
+	const [signupSuccess, setSignupSuccess] = useState();
 	return (
 		<Context.Provider
 			value={{
@@ -20,6 +22,10 @@ const GameContext = (props) => {
 				setRandomNumber,
 				userInputNumber,
 				setUserInputNumber,
+				loginSuccess,
+				setLoginSuccess,
+				signupSuccess,
+				setSignupSuccess,
 			}}
 		>
 			{props.children}

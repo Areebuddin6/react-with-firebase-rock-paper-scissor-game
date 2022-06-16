@@ -2,7 +2,6 @@ import React from "react";
 import Header from "./components/Header";
 import Choice from "./components/Choice";
 import Score from "./components/Score";
-import Login from "./components/Login";
 import ChoiceSelection from "./components/ChoiceSelection";
 
 function App() {
