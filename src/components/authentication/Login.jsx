@@ -1,14 +1,22 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Context } from "../GameContext";
-import { signIn, signInWithOtherOptions } from "./firebaseAuth";
+import { signIn } from "./firebaseAuth";
 import { Snackbar, Alert } from "@mui/material";
-import { FcGoogle } from "react-icons/fc";
+import { Link, useNavigate } from "react-router-dom";
+import SignInWithOtherOptions from "./SignInWithOtherOptions";
+import Password from "./Password";
 
 const Login = () => {
-	const { loginSuccess, setLoginSuccess } = useContext(Context);
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
+	const {
+		loginSuccess,
+		setLoginSuccess,
+		email,
+		setEmail,
+		password,
+		setPassword,
+	} = useContext(Context);
 	const [submit, setSubmit] = useState(false);
+	const navigate = useNavigate();
 
 	function changeValue(func, e) {
 		func(e.target.value);
@@ -18,20 +26,20 @@ const Login = () => {
 		setSubmit(false);
 	}
 
-	// useEffect(() =>{
-	// 	console.log(submit)
-	// }, submit)
+	function handleSignIn(e) {
+		e.preventDefault();
+		signIn(email, password, setLoginSuccess)
+			.then(() => setSubmit(true))
+			.then(() => navigate("/game"))
+			.catch((error) => console.log("There was an error\n", error));
+	}
 	return (
 		<div style={{ display: "grid", placeItems: "center" }} className="m-4">
 			<form
-				onSubmit={(e) => {
-					e.preventDefault();
-					setSubmit(true);
-					signIn(email, password, setLoginSuccess);
-				}}
-				className="col-sm-6 col-lg-6 mt-5 border border-dark p-4"
+				onSubmit={handleSignIn}
+				className="col-xs-12 col-xl-4 col-md-6 col-sm-7 mt-5 border border-dark p-4"
 			>
-				<h3 className="mb-2">Login</h3>
+				<h3 className="mb-2 text-center m-2">LOGIN</h3>
 				<div className="form-group">
 					<label htmlFor="email">Email</label>
 					<input
@@ -42,37 +50,24 @@ const Login = () => {
 						onChange={(e) => changeValue(setEmail, e)}
 					/>
 				</div>
-				<div className="form-group">
-					<label htmlFor="password">Password</label>
-					<input
-						type="password"
-						className="form-control"
-						placeholder="Enter your secret password"
-						required
-						onChange={(e) => changeValue(setPassword, e)}
-					/>
-				</div>
+				<Password />
 				<button className="btn btn-primary col-12" type="submit">
 					Login
 				</button>
-				<div className="form-group row justify-content-center pt-2">OR</div>
-				<div className="form-group row justify-content-center p-0 m-0">
-					<button
-						className="btn rounded-circle border border-primary"
-						style={{
-							fontSize: "2rem",
-							width: "3rem",
-							height: "3rem",
-							display: "grid",
-							placeItems: "center",
-							padding: "0",
-							// paddingRight: "2.3rem",
-							// paddingBottom: "0.3rem",
-						}}
-						onClick={() => signInWithOtherOptions("google")}
-					>
-						<FcGoogle />
-					</button>
+				<div className="row justify-content-end mr-1 text-muted">
+					<Link to="/forgot-password" className="text-decoration-none">
+						Forgot Password?
+					</Link>
+				</div>
+				<SignInWithOtherOptions />
+				<div
+					className="row justify-content-center mt-3"
+					style={{ gap: "0.5rem" }}
+				>
+					Need an account?{" "}
+					<Link to="/signup" style={{ textDecoration: "none" }}>
+						SIGN UP
+					</Link>
 				</div>
 			</form>
 			{submit && (
