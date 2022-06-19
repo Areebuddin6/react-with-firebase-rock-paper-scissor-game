@@ -6,6 +6,7 @@ import {
 } from "react-icons/fa";
 import findWinner, { generateRandomNumber } from "./functions";
 import { Context } from "./GameContext";
+import "./choiceSelection.css";
 
 export const icons = [
 	<FaRegHandPaper />,
@@ -17,13 +18,10 @@ const ChoiceSelection = () => {
 	const {
 		result,
 		setResult,
-		userScore,
 		setUserScore,
-		computerScore,
 		setComputerScore,
 		randomNumber,
 		setRandomNumber,
-		userInputNumber,
 		setUserInputNumber,
 	} = useContext(Context);
 	const paperRef = useRef();
@@ -40,13 +38,13 @@ const ChoiceSelection = () => {
 		if (result === "lose") setComputerScore((prevScore) => prevScore + 1);
 	}
 	return (
-		<div className="d-flex flex-row justify-content-center mt-5">
+		<div className="d-flex flex-row justify-content-center mt-3">
 			{refs.map((ref, index) => {
 				return (
 					<div className="m-2" key={index}>
 						<button
 							type="button"
-							className="bg-dark btn-light display-4 bg border-none rounded-circle p-3 d-flex align-items-center text-primary border border-dark"
+							className="choice__selection__btn bg-dark btn-light display-4 bg border-none rounded-circle p-3 d-flex align-items-center text-primary border border-dark"
 							ref={ref}
 							value={index}
 							onClick={() => handleClick(index)}

@@ -1,0 +1,9 @@
+@media only screen and (min-width: 1024px) {
+    .choice__title {
+        font-size: 1.5rem;
+    }
+
+    .choice__paper {
+        font-size: 1rem;
+    }
+}

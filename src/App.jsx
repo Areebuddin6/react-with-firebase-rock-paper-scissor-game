@@ -1,16 +1,33 @@
 import React from "react";
-import Header from "./components/Header";
-import Choice from "./components/Choice";
-import Score from "./components/Score";
-import ChoiceSelection from "./components/ChoiceSelection";
+import Login from "./components/authentication/Login";
+import SignUp from "./components/authentication/SignUp";
+import ForgotPassword from "./components/authentication/ForgotPassword";
+import PrivateRoute from "./components/authentication/PrivateRoute";
+import Game from "./components/Game";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import useGameContext from "./components/hooks/useGameContext";
 
 function App() {
+	const { loginSuccess } = useGameContext();
 	return (
-		<div className="bg-light" style={{ height: "100vh" }}>
-			<Header />
-			<Choice />
-			<Score />
-			<ChoiceSelection />
+		<div className="app">
+			<Router>
+				<Routes>
+					<Route exact path="/" element={<Login />} />
+					<Route
+						exact
+						path="/game"
+						element={
+							<PrivateRoute user={loginSuccess}>
+								<Game />
+							</PrivateRoute>
+						}
+					/>
+					<Route exact path="/signup" element={<SignUp />} />
+					<Route exact path="/forgot-password" element={<ForgotPassword />} />
+					<Route exact path="/game-dev" element={<Game />} />
+				</Routes>
+			</Router>
 		</div>
 	);
 }

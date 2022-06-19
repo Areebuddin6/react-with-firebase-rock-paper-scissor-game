@@ -10,8 +10,8 @@ import {
 	FacebookAuthProvider,
 	updateProfile,
 	sendPasswordResetEmail,
+	onAuthStateChanged,
 } from "firebase/auth";
-import { toUnitless } from "@mui/material/styles/cssUtils";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -59,13 +59,11 @@ export const signIn = (email, password, setLoginSuccess) => {
 	return new Promise((resolve, reject) => {
 		signInWithEmailAndPassword(auth, email, password)
 			.then((userCredentials) => {
-				console.log("User signed in successfully", userCredentials);
 				setLoginSuccess(true);
 				console.log(userCredentials.user.displayName);
 				resolve(true);
 			})
 			.catch((error) => {
-				console.log("There was an error in siging in \n", error);
 				setLoginSuccess(false);
 				reject(error);
 			});
@@ -84,15 +82,11 @@ export const signInWithOtherOptions = (type, setLoginSuccess) => {
 			return new Promise((resolve, reject) => {
 				signInWithPopup(auth, googleProvider)
 					.then((result) => {
-						const credentials = GoogleAuthProvider.credentialFromResult(result);
-						// console.log(result.message, credentials);
 						console.log("Successfully login");
 						setLoginSuccess(true);
 						resolve();
 					})
 					.catch((error) => {
-						const credentials = GoogleAuthProvider.credentialFromError(error);
-						// console.log(error.message, credentials);
 						console.log("There was an error");
 						setLoginSuccess(false);
 						reject();
@@ -104,7 +98,6 @@ export const signInWithOtherOptions = (type, setLoginSuccess) => {
 					.then((result) => {
 						const credentials =
 							FacebookAuthProvider.credentialFromResult(result);
-						console.log(result.message, credentials);
 						setLoginSuccess(true);
 						resolve();
 					})
@@ -131,5 +124,14 @@ export const resetPassword = (email) => {
 				console.log("There was an error in resetting the password");
 				reject();
 			});
+	});
+};
+
+export const checkIsLoggedIn = () => {
+	return new Promise((resolve, reject) => {
+		onAuthStateChanged(auth, (user) => {
+			if (user) return resolve(true);
+			reject(false);
+		});
 	});
 };

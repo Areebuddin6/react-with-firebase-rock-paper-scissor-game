@@ -18,7 +18,7 @@ const ForgotPassword = () => {
 
 	function delay() {
 		return new Promise((resolve, reject) => {
-			setTimeout(resolve, 5000);
+			setTimeout(resolve, 3500);
 		});
 	}
 
@@ -65,7 +65,10 @@ const ForgotPassword = () => {
 						<Alert onClose={handleClose} severity="success">
 							A password rest link has been to your email
 							<div>
-								<strong>Don't refresh it will automatically redirect</strong>
+								<strong>
+									Don't refresh it will automatically redirect and be sure to
+									check the spam folder
+								</strong>
 							</div>
 						</Alert>
 					</Snackbar>

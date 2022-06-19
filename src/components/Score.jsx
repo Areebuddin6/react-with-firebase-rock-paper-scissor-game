@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import { Context } from "./GameContext";
 import { displayMessage } from "./functions";
+import "./score.css";
 
 const Score = () => {
 	const { result, computerScore, userScore } = useContext(Context);
 	return (
-		<div>
+		<div className="score">
 			<div className="d-flex flex-row justify-content-center">
 				{Array(2)
 					.fill(1)
@@ -16,17 +17,25 @@ const Score = () => {
 									margin: "0 1rem",
 									display: "grid",
 									placeItems: "center",
+									fontSize: "2rem",
 								}}
+								className="score__container"
 								key={index}
 							>
-								<div>{index === 0 ? "Computer" : "User"}</div>
+								<div className="score__title">
+									{index === 0 ? "Computer" : "User"} Score
+								</div>
 
 								<div>{index === 0 ? computerScore : userScore}</div>
 							</div>
 						);
 					})}
 			</div>
-			<div className="text-center" style={{ userSelect: "none" }}>
+			<div
+				elevation={10}
+				className="score__message text-center display-4"
+				style={{ userSelect: "none" }}
+			>
 				{result && displayMessage(result)}
 			</div>
 		</div>

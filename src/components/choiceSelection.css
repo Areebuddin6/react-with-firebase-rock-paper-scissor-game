@@ -1,0 +1,13 @@
+@media (hover: hover) {
+    .choice__selection__btn:hover {
+        box-shadow: 0 0 10px grey;
+        transform: scale(1.1);
+    }
+
+}
+
+@media only screen and (max-width: 380px) {
+    .choice__selection__btn {
+        font-size: 2rem;
+    }
+}

@@ -16,10 +16,17 @@ const Login = () => {
 		setPassword,
 	} = useContext(Context);
 	const [submit, setSubmit] = useState(false);
+	const [errorMessage, setErrorMessage] = useState("");
 	const navigate = useNavigate();
 
 	function changeValue(func, e) {
 		func(e.target.value);
+	}
+
+	function delay() {
+		return new Promise((resolve, reject) => {
+			setTimeout(resolve, 500);
+		});
 	}
 
 	function handleClose() {
@@ -28,10 +35,14 @@ const Login = () => {
 
 	function handleSignIn(e) {
 		e.preventDefault();
+		e.target.reset();
 		signIn(email, password, setLoginSuccess)
 			.then(() => setSubmit(true))
-			.then(() => navigate("/game"))
-			.catch((error) => console.log("There was an error\n", error));
+			.then(() => delay().then(() => navigate("/game")))
+			.catch((err) => {
+				setSubmit(true);
+				setErrorMessage(err.code);
+			});
 	}
 	return (
 		<div style={{ display: "grid", placeItems: "center" }} className="m-4">
@@ -74,7 +85,7 @@ const Login = () => {
 				<div style={{ position: "absolute", top: "5rem" }}>
 					<Snackbar
 						open={loginSuccess}
-						autoHideDuration={3000}
+						autoHideDuration={1000}
 						onClose={handleClose}
 					>
 						<Alert onClose={handleClose} severity="success">
@@ -83,11 +94,13 @@ const Login = () => {
 					</Snackbar>
 					<Snackbar
 						open={loginSuccess === false ? true : false}
-						autoHideDuration={3000}
+						autoHideDuration={1000}
 						onClose={handleClose}
 					>
 						<Alert onClose={handleClose} severity="error">
-							There was an error in signing in
+							{errorMessage === "auth/wrong-password"
+								? "Wrong Pasword"
+								: "There was an error in signing in"}
 						</Alert>
 					</Snackbar>
 				</div>
