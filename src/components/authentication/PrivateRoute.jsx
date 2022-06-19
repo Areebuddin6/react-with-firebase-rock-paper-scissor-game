@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { checkIsLoggedIn } from "./firebaseAuth";
+import React from "react";
 import { Navigate } from "react-router-dom";
 
 const PrivateRoute = ({ user, children }) => {
