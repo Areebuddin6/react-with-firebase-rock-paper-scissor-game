@@ -12,6 +12,7 @@ const GameContext = (props) => {
 	const [username, setUsername] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [message, setMessage] = useState("");
 	return (
 		<Context.Provider
 			value={{
@@ -35,6 +36,8 @@ const GameContext = (props) => {
 				setEmail,
 				password,
 				setPassword,
+				message,
+				setMessage,
 			}}
 		>
 			{props.children}

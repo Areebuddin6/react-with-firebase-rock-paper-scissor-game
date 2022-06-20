@@ -19,7 +19,11 @@ export default function findWinner(userInput, randomNumber) {
 	}
 }
 
-export const generateRandomNumber = () => Math.floor(Math.random() * 3);
+export const generateRandomNumber = () => {
+	const random = Math.floor(Math.random() * 3);
+	console.log("From function", random);
+	return random;
+};
 
 export const displayMessage = (result) =>
 	result === "draw" ? "Draw" : `You ${result}`;

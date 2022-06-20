@@ -4,7 +4,7 @@ import { displayMessage } from "./functions";
 import "./score.css";
 
 const Score = () => {
-	const { result, computerScore, userScore } = useContext(Context);
+	const { result, computerScore, userScore, message } = useContext(Context);
 	return (
 		<div className="score">
 			<div className="d-flex flex-row justify-content-center">
@@ -36,7 +36,7 @@ const Score = () => {
 				className="score__message text-center display-4"
 				style={{ userSelect: "none" }}
 			>
-				{result && displayMessage(result)}
+				{message && displayMessage(message)}
 			</div>
 		</div>
 	);
