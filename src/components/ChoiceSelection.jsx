@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import {
 	FaRegHandPaper,
 	FaRegHandRock,
@@ -8,7 +8,7 @@ import findWinner, { generateRandomNumber } from "./functions";
 import { Context } from "./GameContext";
 import "./choiceSelection.css";
 import { useEffect } from "react";
-import { prodErrorMap } from "firebase/auth";
+import usePrevious from "./hooks/usePrevious";
 
 export const icons = [
 	<FaRegHandPaper />,
@@ -24,52 +24,46 @@ const ChoiceSelection = () => {
 		setComputerScore,
 		randomNumber,
 		setRandomNumber,
-		userInputNumber,
-		setUserInputNumber,
+		userInput,
+		setUserInput,
 		setMessage,
 	} = useContext(Context);
 	const [matchesPlayed, setMatchesPlayed] = useState(0);
 
-	function updateStateSync(setFunc, value = 1, replace = false) {
-		return new Promise((resolve, reject) => {
-			setFunc((prev) => {
-				if (replace) prev = value;
-				else prev += value;
-				console.log(prev);
-				resolve(prev);
-				return prev;
-			});
-		});
-	}
+	// Previous value of mathesPlayed i.e. before updating it
+	const previousValue = usePrevious(matchesPlayed);
+
+	// Number of times of rendering the component
+	// const render = useRender();
+	// console.log("Number of times of rendering", render);
+
 	function handleClick(userInput) {
 		setMatchesPlayed(matchesPlayed + 1);
-		// console.log("matches played before updating: ", matchesPlayed);
-		// updateStateSync(setMatchesPlayed)
-		// 	.then((prev) => console.log("matches played returned : ", prev))
-		// 	.then(() => console.log("mathces played: ", matchesPlayed));
-		setUserInputNumber(userInput);
+		setUserInput(userInput);
 		setRandomNumber(generateRandomNumber());
 	}
 
 	useEffect(() => {
-		console.log("computer choice", randomNumber);
-		console.log("matchesPlayed", matchesPlayed);
-		setResult(findWinner(userInputNumber, randomNumber));
+		setResult(findWinner(userInput, randomNumber));
 	}, [matchesPlayed]);
 
 	useEffect(() => {
-		console.log(result);
-		if (result === "win") {
-			setUserScore((prevScore) => prevScore + 1);
-			setMessage("win");
+		if (matchesPlayed != previousValue - 1) {
+			if (result === "win") {
+				setUserScore((prevScore) => prevScore + 1);
+				setMessage("win");
+			}
+			if (result === "lose") {
+				setComputerScore((prevScore) => prevScore + 1);
+				setMessage("lose");
+			}
+			if (result === "draw") {
+				setMessage("draw");
+			}
+			if (result !== "") setResult("");
 		}
-		if (result === "lose") {
-			setComputerScore((prevScore) => prevScore + 1);
-			setMessage("lose");
-		}
-		if (result === "draw") setMessage("draw");
-		if (result !== "") setResult("");
 	}, [result]);
+
 	return (
 		<div className="d-flex flex-row justify-content-center mt-3">
 			{Array(3)

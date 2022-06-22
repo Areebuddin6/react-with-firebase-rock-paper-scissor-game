@@ -7,23 +7,17 @@ import Password from "./Password";
 import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
-	const {
-		signupSuccess,
-		setSignupSuccess,
-		username,
-		setUsername,
-		email,
-		setEmail,
-		password,
-	} = useContext(Context);
+	const { signupSuccess, setSignupSuccess, password } = useContext(Context);
 	const [submit, setSubmit] = useState(false);
+	const [username, setUsername] = useState("");
+	const [email, setEmail] = useState("");
 	const navigate = useNavigate();
 
 	function changeValue(func, e) {
 		func(e.target.value);
 	}
 
-	function handleClose(event, reason) {
+	function handleClose() {
 		setSubmit(false);
 	}
 

@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { Context } from "./GameContext";
+import { getAuth } from "firebase/auth";
 
 export default function findWinner(userInput, randomNumber) {
 	if (userInput == randomNumber) {
@@ -21,7 +22,6 @@ export default function findWinner(userInput, randomNumber) {
 
 export const generateRandomNumber = () => {
 	const random = Math.floor(Math.random() * 3);
-	console.log("From function", random);
 	return random;
 };
 
@@ -46,4 +46,17 @@ export const useRandomNumber = () => {
 export const useUserInputNumber = () => {
 	const { userInputNumber } = useContext(Context);
 	return userInputNumber;
+};
+
+export const getUserName = (setUsername) => {
+	return new Promise((resolve) => {
+		const auth = getAuth();
+		const user = auth.currentUser;
+		if (user !== null) {
+			user.providerData.forEach((profile) => {
+				setUsername(profile.displayName.split(" ")[0]);
+				resolve();
+			});
+		}
+	});
 };

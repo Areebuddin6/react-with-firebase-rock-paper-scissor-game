@@ -7,15 +7,9 @@ import SignInWithOtherOptions from "./SignInWithOtherOptions";
 import Password from "./Password";
 
 const Login = () => {
-	const {
-		loginSuccess,
-		setLoginSuccess,
-		email,
-		setEmail,
-		password,
-		setPassword,
-	} = useContext(Context);
+	const { loginSuccess, setLoginSuccess, password } = useContext(Context);
 	const [submit, setSubmit] = useState(false);
+	const [email, setEmail] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
 	const navigate = useNavigate();
 

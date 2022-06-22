@@ -1,11 +1,14 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { icons } from "./ChoiceSelection";
 import { Context } from "./GameContext";
 import { Paper } from "@mui/material";
 import "./choice.css";
+import { getUserName } from "./functions";
+import { useEffect } from "react";
 
 const Choice = () => {
-	const { randomNumber, userInputNumber } = useContext(Context);
+	const { randomNumber, userInput, username, setUsername } =
+		useContext(Context);
 	const style = {
 		fontSize: "4rem",
 		padding: "0rem 1.2rem",
@@ -14,6 +17,13 @@ const Choice = () => {
 		borderRadius: "50%",
 	};
 	const bootstrapStyle = "border border-primary";
+
+	useEffect(() => {
+		async function getuser() {
+			await getUserName(setUsername);
+		}
+		getuser();
+	}, [username]);
 	return (
 		<div
 			className="container"
@@ -31,11 +41,11 @@ const Choice = () => {
 								className="choice__title row justify-content-center"
 								style={{ fontSize: "2rem" }}
 							>
-								{index === 0 ? "Computer" : "User"} Choice
+								{index === 0 ? "Computer" : username ? username : "User"} Choice
 							</div>
 							<div style={{ display: "grid", placeItems: "center" }}>
 								<div style={style} className={bootstrapStyle}>
-									{index === 0 ? icons[randomNumber] : icons[userInputNumber]}
+									{index === 0 ? icons[randomNumber] : icons[userInput]}
 								</div>
 							</div>
 						</Paper>
